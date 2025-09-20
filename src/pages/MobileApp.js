@@ -5,6 +5,7 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import Popup from "../components/Popup";
 import "./MobileApp.css";
 
+const BACKEND_URL = "https://adotriharis.pythonanywhere.com"
 
 export default function MobileApp() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -98,7 +99,7 @@ export default function MobileApp() {
       };
 
       try {
-        await axios.post("http://localhost:5000/api/locations", data);
+        await axios.post(BACKEND_URL, data);
         setPopupMessage("Location successfully added!");
         setPopupVisible(true);
 
