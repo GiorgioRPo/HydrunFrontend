@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-
 import L from "leaflet";
 import axios from "axios";
 
+const BACKEND_URL = "https://adotriharis.pythonanywhere.com/api/locations"
+
 // default marker icon fix
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -48,7 +50,7 @@ export default function MapView() {
   const [distance, setDistance] = useState(0);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/locations")
+    axios.get(BACKEND_URL)
       .then(res => setMarkers(res.data))
       .catch(err => console.error(err));
 
@@ -59,7 +61,7 @@ export default function MapView() {
         setCurrentPosition(curr);
 
         // find nearest marker
-        axios.get("http://127.0.0.1:5000/api/locations")
+        axios.get(BACKEND_URL)
           .then(res => {
             const locs = res.data;
             if (locs.length === 0) return;
