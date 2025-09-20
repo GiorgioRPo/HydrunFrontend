@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-
 import L from "leaflet";
 import axios from "axios";
 
-const BACKEND_URL = "https://adotriharis.pythonanywhere.com"
+const BACKEND_URL = "https://adotriharis.pythonanywhere.com/api/locations"
 
 // default marker icon fix
 delete L.Icon.Default.prototype._getIconUrl;

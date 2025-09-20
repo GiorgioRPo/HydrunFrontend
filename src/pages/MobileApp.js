@@ -5,7 +5,7 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import Popup from "../components/Popup";
 import "./MobileApp.css";
 
-const BACKEND_URL = "https://adotriharis.pythonanywhere.com"
+const BACKEND_URL = "https://adotriharis.pythonanywhere.com/api/locations"
 
 export default function MobileApp() {
   const [sheetOpen, setSheetOpen] = useState(false);
