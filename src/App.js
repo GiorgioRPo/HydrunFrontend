@@ -1,7 +1,8 @@
-import MapView from "./components/MapView";
+import React from "react";
+import MobileApp from "./pages/MobileApp";
 
 function App() {
-  return <MapView />;
+  return <MobileApp />;
 }
 
 export default App;

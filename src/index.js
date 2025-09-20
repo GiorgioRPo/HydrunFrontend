@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'leaflet/dist/leaflet.css';
-
+import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css";
+import "leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
