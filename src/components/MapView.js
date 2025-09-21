@@ -15,10 +15,10 @@ L.Icon.Default.mergeOptions({
 
 // Folder color mapping
 const folderColors = {
-  "Mandai Wildlife Reserve (Ticketed)": "blue",
+  "Mandai Wildlife Reserve (Ticketed)": "green",
   "Unverified: Google Forms": "yellow",
-  "Verified: Google Forms": "green",
-  "User Input": "red"
+  "Verified: Google Forms": "gold",
+  "User Input": "orange"
 };
 
 function getColoredMarker(color) {
@@ -37,30 +37,29 @@ function FlyToCurrent({ position }) {
   const map = useMap();
   useEffect(() => {
     if (position) {
-      map.setView(position, 16); // zoom in
+      map.setView(position, 20); // zoom in
     }
   }, [position, map]);
   return null;
 }
 
-export default function MapView() {
+export default function MapView({ onNearestFound }) {
   const [markers, setMarkers] = useState([]);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [nearestMarker, setNearestMarker] = useState(null);
   const [distance, setDistance] = useState(0);
+
 
   useEffect(() => {
     axios.get(BACKEND_URL)
       .then(res => setMarkers(res.data))
       .catch(err => console.error(err));
 
-    // get current position
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
         const curr = [pos.coords.latitude, pos.coords.longitude];
         setCurrentPosition(curr);
 
-        // find nearest marker
         axios.get(BACKEND_URL)
           .then(res => {
             const locs = res.data;
@@ -77,6 +76,11 @@ export default function MapView() {
             });
             setNearestMarker(nearest);
             setDistance(minDist);
+
+            // 🔹 send data back up
+            if (onNearestFound) {
+              onNearestFound(nearest, minDist);
+            }
           });
       });
     }
@@ -140,6 +144,7 @@ export default function MapView() {
       )}
 
       {currentPosition && <FlyToCurrent position={currentPosition} />}
+      
     </MapContainer>
   );
 }

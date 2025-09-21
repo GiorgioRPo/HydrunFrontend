@@ -26,6 +26,9 @@ export default function MobileApp() {
   const startTranslateRef = useRef(0);
   const draggingRef = useRef(false);
 
+  const [nearestMarker, setNearestMarker] = useState(null);
+  const [distance, setDistance] = useState(0);
+
   const toggleSheet = () => {
     if (!sheetRef.current) return;
     if (sheetOpen) {
@@ -128,7 +131,12 @@ export default function MobileApp() {
 
   return (
     <div style={{ height: "100vh", width: "100vw", position: "relative" }}>
-      <MapView />
+      <MapView 
+        onNearestFound={(marker, dist) => {
+          setNearestMarker(marker);
+          setDistance(dist);
+        }}
+      />
 
       {/* Floating Plus Button */}
       <button className="floating-plus-button"
@@ -137,6 +145,40 @@ export default function MobileApp() {
       >
         +
       </button>
+
+      {/* Panel showing nearest marker info */}
+      {nearestMarker && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            left: "50px",
+            background: "white",
+            padding: "10px 15px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+            zIndex: 1000,
+            width: "250px",
+            fontSize: "14px",
+            display: sheetOpen ? "none" : "block"
+          }}
+        >
+          <h3 style={{ margin: "0 0 8px", fontSize: "16px" }}>
+            Nearest Location
+          </h3>
+          <p style={{ margin: "0 0 4px" }}>
+            <strong>{nearestMarker.name}</strong>
+          </p>
+          <p style={{ margin: "0 0 4px" }}>
+            {distance.toFixed(2)} km away
+          </p>
+          <p style={{ margin: "0" }}>
+            <strong>Available Temperatures:</strong>{" "}
+            {nearestMarker.temp || "N/A"}
+          </p>
+        </div>
+      )}
+
 
       {/* Bottom Sheet */}
       <div className="bottom-sheet"
@@ -211,7 +253,7 @@ export default function MobileApp() {
           <div style={{ marginBottom: 8 }}>
             <label>Temperature:</label>
             <div className="temp-options">
-                {["Cold", "Hot", "Room temperature"].map((option) => (
+                {["❄️ Cold", "🔥 Hot", "🌡️ Room temperature"].map((option) => (
                 <label key={option} className="temp-option">
                     <input
                     id={option}
